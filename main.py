@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field # Used for data validation and defining request/response models
 from sentence_transformers import SentenceTransformer, util # The core library for semantic search
 import numpy as np
@@ -38,6 +39,20 @@ app = FastAPI(
     title="Simple Semantic Search API",
     description="An API that finds documents semantically similar to a query.",
     version="0.1.0",
+)
+
+origins = [
+    # add your cors origin address and portno here
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Pydantic Models (for Request and Response) ---
